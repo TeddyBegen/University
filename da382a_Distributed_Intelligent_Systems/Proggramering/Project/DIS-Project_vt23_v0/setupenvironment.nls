@@ -1,0 +1,71 @@
+; File with functionality for setting up the environment
+
+; FILE HISTORY:
+
+; 2023-04-10 Initial template, gks
+;
+;
+;
+;
+;---------------------------------------------------
+
+
+; ******************* SETUP ENVIRONMENT *****************
+;
+;---- General setup of the model and the regions
+;- use Model Settings under 'Interface'->'Settings...'
+;
+; World
+; location of origin: Corner
+; Bottom Left
+; min-pxcor: 0 (minimum x coordinate for patches)
+; max-pxcor: 66 (maximum x coordinate for patches)
+; min-pycor: 0 (minimum y coordinate for patches)
+; max-pycor: 33 (maximum y coordinate for patches)
+; X world wraps horizontally
+; X world wraps vertically
+; View
+; Patch size: 22.12
+; Font size: 10
+; Frame rate: 30
+;
+; X show tick counter
+; Tick counter label: ticks
+;-------------------------------------------------
+
+;---- Procedure
+to setup-environment
+  ;---- Houses
+  ;
+  
+  ;---- Factory
+  ;
+  
+  ;---- Work place
+  ;
+  
+  ;---- University
+  ;
+  
+  ;---- Restaurants
+  ;
+  
+  ;---- Town Square
+  ;
+  
+  ;---- Police Station
+  ;
+  
+  ;---- Prison
+  ;
+  
+  
+  ;---- setup of environment-variables
+  ;- time
+  set flagMorning true
+  set flagEvening false
+  set flagWeekend false
+  set time 0
+  
+  
+end ;- setup environment

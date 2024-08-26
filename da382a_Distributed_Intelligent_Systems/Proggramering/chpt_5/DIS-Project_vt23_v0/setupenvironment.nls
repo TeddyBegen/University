@@ -1,0 +1,101 @@
+; File with functionality for setting up the environment
+
+; FILE HISTORY:
+
+; 2023-04-10 Initial template, gks
+; 2023-04-13 Added factory tiles, Group 8 (Ingvar Pétursson, Hampus Oxenholt, Adam Makowski)
+; 2023-04-14 Added bar, Group 8 (Ingvar Pétursson, Hampus Oxenholt, Adam Makowski)
+;
+;
+;---------------------------------------------------
+
+
+; ******************* SETUP ENVIRONMENT *****************
+;
+;---- General setup of the model and the regions
+;- use Model Settings under 'Interface'->'Settings...'
+;
+; World
+; location of origin: Corner
+; Bottom Left
+; min-pxcor: 0 (minimum x coordinate for patches)
+; max-pxcor: 66 (maximum x coordinate for patches)
+; min-pycor: 0 (minimum y coordinate for patches)
+; max-pycor: 33 (maximum y coordinate for patches)
+; X world wraps horizontally
+; X world wraps vertically
+; View
+; Patch size: 22.12
+; Font size: 10
+; Frame rate: 30
+;
+; X show tick counter
+; Tick counter label: ticks
+;-------------------------------------------------
+
+patches-own [ patch-type ]
+
+;---- Procedure
+to setup-environment
+  ;---- Houses
+  ;
+  
+  ;---- Factory
+  ;
+  
+  let factory-max-x 10
+  let factory-max-y 10
+  let factory-min-x 5
+  let factory-min-y 5
+  
+  ; Calculate the middle of the factory.
+  set factory-middle-x round ((factory-max-x - factory-min-x) / 2 ) + factory-min-x 
+  set factory-middle-y round ((factory-max-y - factory-min-y) / 2 ) + factory-min-y
+  
+  ; Change the colors of the patches and the patch-type. 
+  ask patches with [pxcor >= factory-min-x and pxcor <= factory-max-x and pycor >= factory-min-y and pycor <= factory-max-y]
+  [set pcolor grey
+   set patch-type "factory"]
+  
+  ;---- Work place
+  ;
+  
+  ;---- University
+  ;
+  
+  ;---- Restaurants
+  ;
+  
+  ;---- Town Square
+  ;
+  
+  let bar-max-x 30
+  let bar-max-y 30
+  let bar-min-x 25
+  let bar-min-y 25
+  
+  ; Calculate the middle of the bar.
+  set bar-middle-x round ((bar-max-x - bar-min-x) / 2 ) + bar-min-x 
+  set bar-middle-y round ((bar-max-y - bar-min-y) / 2 ) + bar-min-y
+  
+  ; Change the colors of the patches and the patch-type. 
+  ask patches with [pxcor >= bar-min-x and pxcor <= bar-max-x and pycor >= bar-min-y and pycor <= bar-max-y]
+  [set pcolor blue
+   set patch-type "bar"]
+  
+  ;---- Police Station
+  ;
+  
+  ;---- Prison
+  ;
+  
+  
+  ;---- setup of environment-variables
+  ;- time
+  set flagMorning true
+  set flagEvening false
+  set flagWeekend false
+  set time 0
+  
+  
+end ;- setup environment

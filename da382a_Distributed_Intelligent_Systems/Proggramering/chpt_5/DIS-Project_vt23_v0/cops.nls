@@ -1,0 +1,37 @@
+; File with the "to-go"- functionality of cops-agents
+
+; FILE HISTORY:
+
+; 2022-04-10 Initial template, gks
+; 
+;
+;
+;
+;---------------------------------------------------
+
+
+
+
+; ******************* PROCESS MESSAGES *****************
+; reading messages
+to process-cop-msg
+  print word who ": cop-messages processed"
+  
+end ;- process-cop-msg
+
+
+; ******************* PERCEIVE ENVIRONMENT *****************
+; Updating beliefs
+to perceive-cop-env
+  print word who ": perceive-cop-env"
+  
+end ;- perceive-cop-env
+
+      
+; ******************* FINITE STATE MACHINE *****************
+; Running the current state
+
+to test-cop
+  print word who ": in state test-cop"
+end ;- test-cop
+

@@ -1,0 +1,52 @@
+; File with functionality regarding the setup of agents
+
+; FILE HISTORY:
+
+; 2023-04-10 Template created by gks
+; 2023-04-14 Change current_state to idle, Group 8 (Ingvar Pétursson, Hampus Oxenholt, Adam Makowski)
+;
+;
+;
+;
+;---------------------------------------------------
+
+
+; ******************* SETUP AGENTS *****************
+;
+to setup-agents
+  
+  ;---- setup citizens
+  
+  create-citizens 20 [
+    set label who
+    set shape "person" 
+    set size 1
+    set color white
+    setxy random 30 random 30
+    set intentions []
+    set beliefs []
+    set incoming-queue []
+    set friendsList []
+    set current_state "idle"
+  ]
+  
+  
+  
+  ;---- setup cops
+  
+  create-cops 0 [
+    set label who
+    set shape "person police" 
+    set size 1
+    set color blue
+    setxy random 10 random 40
+    set intentions []
+    set beliefs []
+    set incoming-queue []
+    set mode "eager"
+    set current_state "test-cop"
+  ]
+  
+  
+end ;--setup-agents
+

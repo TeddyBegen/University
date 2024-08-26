@@ -1,0 +1,228 @@
+; File with the "to-go"- functionality of citizen-agents
+
+; FILE HISTORY:
+
+; 2022-04-10 Initial template, gks
+; 2023-04-13 Added work at factory intention, Group 8 (Ingvar Pétursson, Hampus Oxenholt, Adam Makowski)
+; 2023-04-14 Rewrote belief system, Group 8 (Ingvar Pétursson, Hampus Oxenholt, Adam Makowski)
+;
+;
+;---------------------------------------------------
+
+
+
+
+; ******************* PROCESS MESSAGES *****************
+; reading messages
+to process-citizen-msg
+  print word who ": citizen-messages processed"
+  
+end ;- process-citizen-msg
+
+
+; ******************* PERCEIVE ENVIRONMENT *****************
+; Updating beliefs
+to perceive-citizen-env
+  print word who ": citizen environment perceived"
+  ; test:
+  ; put the intention test-citizen-intention onto the intention stack
+  
+  ; Update all beliefs
+  evaluate-belief
+  
+end ;- perceive-citizen-env
+
+
+;******************* INTENTIONS *****************
+; procedures that are put onto the intention stack and that are executed
+; to test this testfunction you will need to put it onto the intention stack of the citizen
+to test-citizen-intention
+  print word who ": test-citizen-intention"
+end ;- test-citizen-intention
+
+to-report start-work-at-factory-done
+  ; TODO WRITE
+  report true
+end 
+
+to-report stop-work-at-factory-done
+  ; TODO WRITE
+  report true
+end 
+
+to-report go-to-factory-done 
+  report true
+  
+  let current-patch patch-here
+  
+  ; Get the 
+  let patch-type-check [patch-type] of current-patch
+  ; print patch-type-check
+  ifelse (patch-type-check = "factory") [
+    
+    ; let belief create-belief "can-work" true
+    ; remove-belief belief
+    report true
+  ] [
+    report false  
+  ]
+end 
+
+; ******************* FINITE STATE MACHINE *****************
+; Running the current state
+
+to at-work
+  print word who ": State: at-work"
+end
+
+to at-bar 
+  print word who ": State: at-bar"
+end 
+
+to idle
+  print word who ": State: idle"
+end 
+
+to test-citizen
+  print word who ": in state test-citizen"
+end ;- test-citizen
+
+; ******************* REACTIVE INTENTIONS *****************
+
+to start-work-at-factory
+  set factory-workers-current factory-workers-current + 1
+  set employed? true
+end
+
+to stop-work-at-factory
+  set factory-workers-current factory-workers-current - 1
+  set employed? false
+end
+
+to go-to-factory
+  ; let target-patch [factory-middle-x factory-middle-y]
+  move-to patch factory-middle-x factory-middle-y
+end 
+  
+to go-to-home-bar
+  set entertained random 21 + 80
+  go-to-home
+end 
+
+to want-entertainment 
+  move-to patch bar-middle-x bar-middle-y
+  set next_state [ -> at-bar ]
+end 
+
+to go-to-home
+  move-to patch home-x-cor home-y-cor 
+  set next_state [ -> idle ]
+  
+  print "I WALK HOME"
+end 
+
+to random_walk
+
+    let empty_patches patches in-radius vision_range with [not any? turtles-here]
+
+    if any? empty_patches
+      [ let target one-of empty_patches
+        face target
+        move-to target ]
+
+end
+
+; ******************* UPDATE BELIEF *****************
+ 
+to evaluate-belief
+  
+  ; *** SET BELIEFS ***
+  
+  ; Create beliefs.
+  let work-belief-exist exist-beliefs-of-type "can-work"
+  let entertainment-belief-exist exist-beliefs-of-type "want-entertainment"
+  
+  if work-belief-exist = true [
+    
+    ifelse flagEvening = true or flagWeekend = true or flagMorning = false or factory-workers-current >= factory-workers-current-max [
+      let can-work-belief-update create-belief "can-work" false
+      update-belief can-work-belief-update
+    ] [
+      let can-work-belief-update create-belief "can-work" true
+      update-belief can-work-belief-update
+    ]
+    
+
+       
+    ; *** ADD INTENTIONS *** 
+   
+    ; Get the first element of the type "can-work", there should only be one of these elements
+    let work-belief first beliefs-of-type "can-work"
+    
+    ; Get the patch type that the agent is standing on 
+    let current-patch patch-here
+    let patch-type-check [patch-type] of current-patch
+    
+    ; Intention go to work
+    if item 1 work-belief = true [
+      add-intention "go-to-factory" "go-to-factory-done"
+      print word who ": Added intention to work at factory"
+    ]
+    
+    ; Intention start work
+    if item 1 work-belief = true and patch-type-check = "factory" and factory-workers-current < factory-workers-current-max [
+      add-intention "start-work-at-factory" "start-work-at-factory-done"
+      set next_state [ -> at-work ]
+    ]
+    
+    ; Intention quit work
+    if employed? = true and flagEvening = true [
+      add-intention "stop-work-at-factory" "stop-work-at-factory-done"
+      set next_state [ -> idle ]
+    ]  
+
+    if employed? = false and factory-workers-current >= factory-workers-current-max [
+      add-intention "random_walk" "true"
+    ]
+    
+  ]
+  
+  if entertainment-belief-exist = true [
+  
+    ; *** ADD BELIEFS *** 
+    
+    ifelse flagEvening = false and entertained >= 20 [
+      let want-entertainment-belief-update create-belief "want-entertainment" false
+      update-belief want-entertainment-belief-update
+    ] [
+      let want-entertainment-belief-update create-belief "want-entertainment" true
+      update-belief want-entertainment-belief-update
+    ]
+    
+    ; *** ADD INTENTIONS ***
+   
+    ; Get the first element of the type "want-entertainment", there should only be one of these elements
+    let entertainment-belief first beliefs-of-type "want-entertainment"
+    
+    print "item 1 entertainment-belief, flagEvening"
+    print item 1 entertainment-belief 
+    print flagEvening
+    
+    ifelse item 1 entertainment-belief = true and flagEvening = true [
+      want-entertainment
+    ] [
+      if flagEvening = true [
+        go-to-home
+      ]
+    ]
+    
+    ; Get the patch type that the agent is standing on 
+    let current-patch patch-here
+    let patch-type-check [patch-type] of current-patch
+    
+    if flagEvening = false and patch-type-check  = "bar" [
+      go-to-home-bar
+    ]
+  ]  
+  
+end 

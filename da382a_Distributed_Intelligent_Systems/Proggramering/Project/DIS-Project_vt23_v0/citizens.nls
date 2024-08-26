@@ -1,0 +1,50 @@
+; File with the "to-go"- functionality of citizen-agents
+
+; FILE HISTORY:
+
+; 2022-04-10 Initial template, gks
+; 
+;
+;
+;
+;---------------------------------------------------
+
+
+
+
+; ******************* PROCESS MESSAGES *****************
+; reading messages
+to process-citizen-msg
+  print word who ": citizen-messages processed"
+  
+end ;- process-citizen-msg
+
+
+; ******************* PERCEIVE ENVIRONMENT *****************
+; Updating beliefs
+to perceive-citizen-env
+  print word who ": citizen environment perceived"
+  ; test:
+  ; put the intention test-citizen-intention onto the intention stack
+  add-intention "test-citizen-intention" "true"
+  
+end ;- perceive-citizen-env
+
+
+
+
+;******************* INTENTIONS *****************
+; procedures that are put onto the intention stack and that are executed
+; to test this testfunction you will need to put it onto the intention stack of the citizen
+to test-citizen-intention
+  print word who ": test-citizen-intention"
+end ;- test-citizen-intention
+
+      
+; ******************* FINITE STATE MACHINE *****************
+; Running the current state
+
+to test-citizen
+  print word who ": in state test-citizen"
+end ;- test-citizen
+
